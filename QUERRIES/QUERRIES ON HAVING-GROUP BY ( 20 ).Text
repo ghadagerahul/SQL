@@ -1,0 +1,267 @@
+================================================================================================================
+                                 *** QUERRIES ON HAVING- GROUP BY CLAUSE***
+================================================================================================================
+1) WAQTD TOTAL SAL NEED TO PAY EAACH JOB IN EMOLOYEE TABLE.
+
+SQL> select sum(sal), job
+  2  from emp
+  3  group by job;
+
+  SUM(SAL) JOB                                                                  
+---------- ---------                                                            
+      4150 CLERK                                                                
+      5600 SALESMAN                                                             
+      5000 PRESIDENT                                                            
+      8275 MANAGER                                                              
+      6000 ANALYST 
+================================================================================================================
+2) WAQTD THE HIREDATE ON WHICH ATLEAST 3 EMPLOYEEE WERE HIRED.                                                             
+
+SQL> select hiredate
+  2  FROM EMP
+  3  GROUP BY HIREDATE
+  4  HAVING COUNT(*) >3;
+
+no rows selected
+================================================================================================================
+3) WAQTD THE DEPARTMENT NUMBER WHICH HAS MORE THAN 2 EMPLOYEES AND TOTAL AMOUNT REQUIRED  TO PAY THE
+ MONTHLY SALARIES OF ALL EMPLOYEE IN THAT DEPARTMRNT SHOULD BE MORE THAN 9000.
+ 
+SQL> SELECT SUM(SAL), DEPTNO
+  2  FROM EMP
+  3  GROUP BY DEPTNO
+  4  HAVING COUNT(*) >2 AND SUM(SAL) >9000;
+
+  SUM(SAL)     DEPTNO                                                           
+---------- ----------                                                           
+      9400         30                                                           
+     10875         20 
+================================================================================================================
+4) WAQTD NUMBER OF EMPLOYEE WORKING IN EACH DEPARTMENT AND IT'S AVRAGE SALARY BY EXCLUDING AL THE EMPLOYEE 
+EWHOSE SALARY LESS THAN THEIR COMM.
+
+SQL> SELECT COUNT(*), SUM(SAL)
+  2  FROM EMP
+  3  WHERE SAL>COMM
+  4  GROUP BY DEPTNO;
+
+  COUNT(*)   SUM(SAL)                                                           
+---------- ----------                                                           
+         3       4350    
+
+================================================================================================================                                                          
+5) WAQTD THE SALARIES WHICH HAS REPETATION IN THE SAL COLUMN OF EMPLOYEE TABLE.
+ 
+SQL> SELECT SAL
+  2  FROM EMP
+  3  GROUP BY SAL
+  4  HAVING COUNT(*) >1;
+
+       SAL                                                                      
+----------                                                                      
+      1250                                                                      
+      3000 
+
+================================================================================================================
+6) WAQTD THE EMPLOYEE NAME ONLY IF MORE THAN ONE PERSON THE EMP OF THE CPMPANY HAS SAME NAME.                                                                        
+
+SQL> SELECT ENAME
+  2  FROM EMP
+  3  GROUP BY ENAME
+  4  HAVING COUNT(*)>1;
+
+no rows selected
+
+================================================================================================================
+7) WAQTD THE DEPT NO WHO AVRAGE SAL BETWEEN 2500 TO 3000.
+
+SQL> SELECT DEPTNO
+  2  FROM EMP
+  3  GROUP BY DEPTNO
+  4  HAVING AVG(SAL) BETWEEN 2500 AND 3000;
+
+    DEPTNO                                                                      
+----------                                                                      
+        10  
+
+================================================================================================================ 
+8) WAQTD NO OF EMPLOYEE ONLY OF THEY ARE WORKING AS MANAGER AND ANAYST AND THEIR ANNUAL SAL SHOULD
+ BE SHOULD END WITH O IN EACH DEPARTMET
+
+SELECT COUNT(*)
+FROM EMP
+WHERE JOB IN'MANAGER' OR JOB IN 'ANALYST' AND SAL*12 LIKE 'O%'
+GROUP BY DEPT NO;
+
+================================================================================================================                                                                   
+9) WAQTD NO OF CLERKS WORKING IN EACH DEPT
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE JOB IN 'CLERK'
+  4  GROUP BY DEPTNO;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         1                                                                      
+         2                                                                      
+         1 
+
+================================================================================================================                                                                     
+10)WAQTD HIGHEST SAL GIVEN TO AMANAGER IN EACH DEPT.
+
+SQL> SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE JOB IN 'MANAGER'
+  4  GROUP BY DEPTNO;
+
+  MAX(SAL)                                                                      
+----------                                                                      
+      2850                                                                      
+      2975                                                                      
+      2450 
+
+================================================================================================================                                                                     
+11 ) WAQTD NO OFTIMES THE SALESMAN HAVE REPEATED IN THE EMP TABLE.
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE JOB IN 'SALESMAN'
+  4  GROUP BY JOB
+  5  HAVING COUNT(*) >1;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         4   
+
+================================================================================================================                                                                   
+12)WAQTD DEPTNO AND NUMBER OF EMPLOYEE WORKING EACH DEPT EXCEPT FOR THOSE WHO ARE WORKING IN DEPT 10
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE COMM IS NOT NULL
+  4  GROUP BY DEPTNO;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         4     
+
+================================================================================================================                                                                 
+14) WAQTD NO OF EMP GETTING SALARY MORE THAN 1600 EXCLUDING ALL THE MANAGER IN EACH DEPT.
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE SAL >1600 AND JOB NOT IN 'MANAGER'
+  4  GROUP BY DEPTNO;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         2                                                                      
+         1  
+
+================================================================================================================                                                                    
+15) WAQTD AVRAGE SALARY NEEDED TO PAY THE ALL THE EMPLOYEE WHO ARE HAVING A REPORTING MANAGER IN EACH DEPT.
+
+SQL> SELECT AVG(SAL)
+  2  FROM EMP
+  3  WHERE MGR IS NOT NULL
+  4  GROUP BY JOB;
+
+  AVG(SAL)                                                                      
+----------                                                                      
+    1037.5                                                                      
+      1400                                                                      
+2758.33333                                                                      
+      3000 
+
+================================================================================================================
+17) WAQTD NO OF EMP GETTING THE SAME SALARY, WORKING IN THE SAME DEPT.                                                                     
+
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  GROUP BY DEPTNO, HIREDATE
+  4  HAVING COUNT(*) >1;
+
+no rows selected
+
+================================================================================================================
+16) WAQTD NO OF EMPLOYEE HIRED INTO SAME DEPRTMENT IN SAME DAY.
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  GROUP BY DEPTNO,SAL;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         1                                                                      
+         1                                                                      
+         1                                                                      
+         1                                                                      
+         2                                                                      
+         2                                                                      
+         1                                                                      
+         1                                                                      
+         1                                                                      
+         1                                                                      
+         1                                                                      
+
+  COUNT(*)                                                                      
+----------                                                                      
+         1                                                                      
+
+12 rows selected.
+
+================================================================================================================
+18) WAQTD MAX SAL GIVEN IN EACH DESIGNATION EXCLUSIVE THOSE WHOSE NAME START WITH 'K'
+
+SQL> SELECT MAX(SAL)
+  2  FROM EMP
+  3  WHERE ENAME NOT LIKE 'K%'
+  4  GROUP BY JOB;
+
+  MAX(SAL)                                                                      
+----------                                                                      
+      1300                                                                      
+      1600                                                                      
+      2975                                                                      
+      3000 
+
+================================================================================================================                                                                     
+19) WAQTD NO OF EMPLOYEE REPORTING TO 7839 IN EACH DEPT.
+
+SQL> SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE MGR IN 7839
+  4  GROUP BY DEPTNO;
+
+  COUNT(*)                                                                      
+----------                                                                      
+         1                                                                      
+         1                                                                      
+         1 
+
+================================================================================================================                                                                     
+20) WAQTD NO OF EMP NAMES STARTING WITH AN VOWEL IN EACH DEPT.
+
+SQL> 
+
+  1  SELECT COUNT(*)
+  2  FROM EMP
+  3  WHERE ENAME  LIKE 'A%' OR
+  4        ENAME LIKE 'E%' OR 
+  5        ENAME LIKE 'I%' OR 
+  6        ENAME LIKE 'O%' 
+  7       OR ENAME LIKE 'U%'
+  8* GROUP BY DEPTNO
+SQL> /
+
+  COUNT(*)                                                                      
+----------                                                                      
+         1                                                                      
+         1                                                                      
+
+================================================================================================================
+*********************************************  END  *************************************************************
+
+===============================================================================================================
